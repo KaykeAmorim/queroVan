@@ -1,0 +1,27 @@
+.form-control::placeholder {
+    font-weight: bold;
+    opacity: 0.5;
+    color: #ccc;
+}
+
+.center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.input{
+    background-color: rgba(45,27,51,0.1);
+    width: 90%;
+}
+
+.btn-success{
+    background-color: #395a4f;
+    border-color: #395a4f;
+}
+
+.background{
+    background: rgb(45,27,51);
+    background: linear-gradient(169deg, rgba(45,27,51,1) 0%, rgba(243,106,113,1) 100%);
+    height: 100vh;
+}
