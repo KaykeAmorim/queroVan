@@ -13,18 +13,87 @@
 </head>
 <body class="center background">
     <section class="center container" style="height: 80%;">
-        <form action="http://localhost:3000/authorization" class="p-3 mx-auto" method="post" style="border: 2px #CCC solid;border-radius: 12px;height: 75%; width: 75%;max-width: 500px;max-height: 350px;">
-            <h3 class="text-light text-center">BEM VINDO</h3>
+        <form id="login" class="p-3 mx-auto" style="border: 2px #CCC solid;border-radius: 12px;height: 75%; width: 75%;max-width: 500px;max-height: 350px;">
+            <h3 class="text-light mt-3 text-center">BEM VINDO</h3>
             <input type="text" placeholder="Insira seu email" name="email" id="email" class="input text-dark form-control mx-auto mt-4">
             <input type="password" placeholder="Insira sua senha" name="password" id="password" class="input form-control text-dark mx-auto mt-4">
-            <select name="type" id="type" class="input form-control mx-auto mt-4 text-light">
+            <select name="type" id="type" class="input form-control mx-auto mt-4 mb-2 text-light">
                 <option class="input text-dark" value="passenger"><strong>PASSAGEIRO</strong></option>
                 <option class="input text-dark" value="driver"><strong>MOTORISTA</strong></option>
             </select>
-            <div class="center mt-4">
-                <button class="form-control text-light w-50 btn-success">ENTRAR</button>
+            <div id="accessDenied" class="p-2 text-center d-none form-group">
+                <label class="font-weight-bold" style="color: #161917;">Usuário ou senha incorreto</label>
+            </div>
+            <div class="center mt-2">
+                <button type="button" id="submit" class="form-control text-light w-50 btn-success">ENTRAR</button>
             </div>
         </form>
     </section>
 </body>
+<script>
+    const btn_submit = document.getElementById("submit")
+    const input_email = document.getElementById("email")
+    const input_password = document.getElementById("password")
+    const select_type = document.getElementById("type")
+
+    btn_submit.addEventListener('click', onSubmit)
+    setChangeColorOnElement([select_type, input_password, input_email])
+
+    function setChangeColorOnElement(arr) {
+        arr.forEach((item) => {
+            item.addEventListener('blur', changeTextToLight)
+            item.addEventListener('click', changeTextToDark)
+        })
+    }
+
+    function changeTextToLight(event){
+        event.target.setAttribute('class', 'input form-control text-white mx-auto mt-4')
+    }
+
+    function changeTextToDark(event){
+        event.target.setAttribute('class', 'input form-control text-dark mx-auto mt-4')
+    }
+    
+    function onSubmit(event){
+        document.forms.login.setAttribute('class', '')
+        const req = buildRequest()
+        sendRequest(req)
+    }
+
+    function buildRequest(){
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        return new Request("http://localhost:3000/authorization",{method: 'POST', "headers": myHeaders, body: JSON.stringify({
+            "email": document.getElementById('email').value,
+            "password": document.getElementById('password').value,
+            "type": document.getElementById('type').value,
+        })})
+    }
+
+    function sendRequest(req){
+        fetch(req).then((response) => {
+            response.json().then((res) => {
+                login(res)
+            })
+        })
+    }
+
+    function login(res){
+        if(res.token){
+            localStorage.setItem('token', res.token)
+        }
+        else{
+            accessDenied()
+        }
+    }
+
+    function accessDenied(){
+        const accessDenied = document.getElementById('accessDenied')
+        accessDenied.setAttribute('class', 'center')
+        input_email.setAttribute('style', 'border-color: #b9030f;border 5px;')
+        input_password.setAttribute('style', 'border-color: #b9030f;border 5px;')
+        select_type.setAttribute('style', 'border-color: #b9030f;border 5px;')
+        document.forms.login.setAttribute('class', 'accessDenied')
+    }
+</script>
 </html>
