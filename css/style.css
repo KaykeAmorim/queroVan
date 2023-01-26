@@ -1,0 +1,41 @@
+.form-control::placeholder {
+    font-weight: bold;
+    opacity: 0.5;
+    color: #ccc;
+}
+
+.center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.input{
+    background-color: rgba(45,27,51,0.1);
+    width: 90%;
+}
+
+.btn-success{
+    background-color: #395a4f;
+    border-color: #395a4f;
+}
+
+.background{
+    background: rgb(50,47,62);
+background: linear-gradient(169deg, rgba(50,47,62,1) 30%, rgba(230,60,109,1) 100%);
+    height: 100vh;
+}
+
+.accessDenied {
+    animation: tremer .2s;
+    animation-iteration-count: 4;
+}
+
+/* keyframe para ajustar até onde treme */
+@keyframes tremer {
+    0% {margin-left: 0;}
+    25% {margin-left: 7px;}
+    50% {margin-left: 0;}
+    75% {margin-left: -7px;}
+    100% {margin-left: 0;}
+}
